@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Tarjeta de Fidelidad</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #0d47a1;
+            --primary-light: #64b5f6;
+            --secondary: #0288d1;
+            --accent: #4fc3f7;
+            --light: #e3f2fd;
+            --dark: #0d2c54;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+            --text: #333333;
+            --text-light: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 450px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+            opacity: 0.3;
+        }
+        
+        .card-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-header p {
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-body {
+            padding: 30px;
+        }
+        
+        .card-preview {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            width: 100%;
+            max-width: 350px;
+            height: 220px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 16px;
+            padding: 25px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover {
+            transform: rotateY(10deg) rotateX(5deg);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+        
+        .card-chip {
+            width: 50px;
+            height: 40px;
+            background: linear-gradient(135deg, #ffcc80 0%, #ffa726 100%);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .card-number {
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .card-info {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .card-holder, .card-expiry {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .card-logo {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            font-size: 32px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .client-info {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .client-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .card-number-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .progress-container {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+        
+        .visits-history {
+            margin-top: 30px;
+        }
+        
+        .visits-history h3 {
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .visit-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .visit-date {
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .visit-status {
+            font-weight: bold;
+            color: var(--success);
+        }
+        
+        .reward-badge {
+            background: var(--success);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px auto;
+            width: fit-content;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+        
+        .reward-message {
+            text-align: center;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 4px solid var(--success);
+            display: none;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--light);
+            color: var(--dark);
+            font-size: 14px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        @media (max-width: 480px) {
+            .card {
+                height: 200px;
+                padding: 20px;
+            }
+            
+            .card-number {
+                font-size: 18px;
+                letter-spacing: 2px;
+            }
+            
+            .card-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card-header">
+            <h2>Tarjeta de Fidelidad</h2>
+            <p>Programa de Recompensas</p>
+        </div>
+        
+        <div class="card-body">
+            <div class="card-preview">
+                <div class="card">
+                    <div class="card-chip"></div>
+                    <div class="card-number" id="cardNumberDisplay">•••• •••• •••• ••••</div>
+                    <div class="card-info">
+                        <div class="card-holder" id="clientName">Cargando...</div>
+                        <div class="card-expiry">VIP</div>
+                    </div>
+                    <div class="card-logo">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="client-info">
+                <div class="client-name" id="clientNameText">Cargando...</div>
+                <div class="card-number-label">
+                    <i class="fas fa-credit-card"></i>
+                    <span id="cardNumberText">ID de tarjeta: </span>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-labels">
+                    <span>Progreso de Visitas</span>
+                    <span><span id="currentVisits">0</span>/<span id="goalVisits">10</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="progressText">Faltan 10 visitas para tu premio</div>
+            </div>
+            
+            <div id="rewardMessage">
+                <div class="reward-badge">
+                    <i class="fas fa-gift"></i> ¡Premio Disponible!
+                </div>
+                <div class="reward-message">
+                    <p>Presenta esta tarjeta para reclamar tu recompensa</p>
+                </div>
+            </div>
+            
+            <div class="visits-history">
+                <h3><i class="fas fa-history"></i> Historial de Visitas</h3>
+                <div id="visitsList">
+                    <!-- Historial de visitas se cargará aquí -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 Programa de Fidelidad | Todos los derechos reservados</p>
+        </div>
+    </div>
+    
+    <script>
+        async function loadCardData() {
+            try {
+                // Obtener ID de tarjeta de URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const cardId = urlParams.get('id');
+                
+                if (!cardId) throw new Error('No se proporcionó ID de tarjeta');
+                
+                // Simular datos mientras se implementa el backend
+                const clientData = {
+                    nombre: "María López",
+                    visitas: 8,
+                    meta: 10,
+                    historial: [
+                        { fecha: "2023-07-15T10:30:00Z", contador_en_visita: 8 },
+                        { fecha: "2023-07-12T16:15:00Z", contador_en_visita: 7 },
+                        { fecha: "2023-07-08T11:20:00Z", contador_en_visita: 6 },
+                        { fecha: "2023-07-02T15:45:00Z", contador_en_visita: 5 },
+                        { fecha: "2023-06-25T09:15:00Z", contador_en_visita: 4 },
+                        { fecha: "2023-06-18T14:30:00Z", contador_en_visita: 3 },
+                        { fecha: "2023-06-10T12:00:00Z", contador_en_visita: 2 },
+                        { fecha: "2023-06-01T17:20:00Z", contador_en_visita: 1 }
+                    ]
+                };
+                
+                // Mostrar datos
+                document.getElementById('clientName').textContent = clientData.nombre;
+                document.getElementById('clientNameText').textContent = clientData.nombre;
+                document.getElementById('cardNumberDisplay').textContent = '•••• •••• •••• ' + cardId.slice(-4);
+                document.getElementById('cardNumberText').textContent += cardId;
+                document.getElementById('currentVisits').textContent = clientData.visitas;
+                document.getElementById('goalVisits').textContent = clientData.meta;
+                
+                // Calcular progreso
+                const progress = Math.min(100, (clientData.visitas / clientData.meta) * 100);
+                document.getElementById('progressFill').style.width = `${progress}%`;
+                
+                // Actualizar texto de progreso
+                const remaining = clientData.meta - clientData.visitas;
+                if (remaining > 0) {
+                    document.getElementById('progressText').textContent = 
+                        `Faltan ${remaining} visita${remaining > 1 ? 's' : ''} para tu premio`;
+                } else {
+                    document.getElementById('progressText').textContent = 
+                        "¡Has alcanzado tu meta de visitas!";
+                }
+                
+                // Mostrar mensaje de premio si aplica
+                if (clientData.visitas >= clientData.meta) {
+                    document.getElementById('rewardMessage').style.display = 'block';
+                    document.querySelector('.reward-message').style.display = 'block';
+                } else {
+                    document.getElementById('rewardMessage').style.display = 'none';
+                }
+                
+                // Mostrar historial
+                const visitsList = document.getElementById('visitsList');
+                visitsList.innerHTML = '';
+                
+                clientData.historial.forEach(visit => {
+                    const visitItem = document.createElement('div');
+                    visitItem.className = 'visit-item';
+                    
+                    const date = new Date(visit.fecha);
+                    const formattedDate = date.toLocaleDateString('es-ES', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    const remainingAtVisit = clientData.meta - visit.contador_en_visita;
+                    
+                    visitItem.innerHTML = `
+                        <div class="visit-date">
+                            <i class="far fa-calendar-alt"></i> ${formattedDate}
+                        </div>
+                        <div class="visit-status">
+                            ${remainingAtVisit} para premio
+                        </div>
+                    `;
+                    
+                    visitsList.appendChild(visitItem);
+                });
+                
+            } catch (error) {
+                document.getElementById('clientName').textContent = error.message;
+                document.getElementById('clientNameText').textContent = error.message;
+            }
+        }
+        
+        // Inicializar la tarjeta al cargar
+        window.addEventListener('load', loadCardData);
+    </script>
+</body>
+</html>
