@@ -22,7 +22,7 @@
             --transition: all 0.3s ease;
         }
         
-        * {
+               * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -56,10 +56,12 @@
         
         header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding: 25px 40px;
+            padding: 20px 40px;
             text-align: center;
             position: relative;
             overflow: hidden;
+            border-radius: 16px 16px 0 0;
+            box-shadow: var(--shadow);
         }
         
         .logo-container {
@@ -70,8 +72,8 @@
         }
         
         .logo {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: var(--accent);
             border-radius: 50%;
             display: flex;
@@ -83,9 +85,32 @@
         }
         
         .logo i {
-            font-size: 32px;
+            font-size: 28px;
             color: white;
         }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(79, 195, 247, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(79, 195, 247, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(79, 195, 247, 0); }
+        }
+        
+        .logo-text {
+            color: white;
+        }
+        
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .logo-text p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
         .nav-tabs {
             display: flex;
             justify-content: center;
@@ -111,41 +136,7 @@
             background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(79, 195, 247, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(79, 195, 247, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(79, 195, 247, 0); }
-        }
-        
-        .logo-text {
-            color: white;
-        }
-        
-        .logo-text h1 {
-            font-size: 28px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        
-        .logo-text p {
-            font-size: 16px;
-            opacity: 0.9;
-            margin-top: 5px;
-        }
-        
-        .header-decoration {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
-            background-size: cover;
-            opacity: 0.3;
-        }
-        
-        main {
+                main {
             padding: 40px;
         }
         
@@ -310,6 +301,7 @@
             display: flex;
             justify-content: center;
             margin: 25px 0;
+            perspective: 1000px;
         }
         
         .card {
@@ -322,12 +314,12 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
-            transform-style: preserve-3d;
+            transform: perspective(1000px);
             transition: transform 0.5s ease;
         }
         
         .card:hover {
-            transform: rotateY(10deg) rotateX(5deg);
+            transform: perspective(1000px) rotateY(10deg) rotateX(5deg);
         }
         
         .card::before {
@@ -409,7 +401,13 @@
                 width: 100%;
                 max-width: 300px;
             }
+            
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
         }
+        
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
